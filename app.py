@@ -17,6 +17,10 @@ def sms_reply():
     resp = MessagingResponse()
     resp.message("Ohh thats great !!! Thumbs up to that".format(msg))
 
+    if msg = "akash":
+        resp.message("Oh my god")
+
+
     return str(resp)
 
 if __name__ == "__main__":
