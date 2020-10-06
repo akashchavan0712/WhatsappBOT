@@ -1,174 +1,109 @@
-from flask import Flask, request, redirect
-from twilio.twiml.messaging_response import MessagingResponse
-import random as rd
-from datetime import date
-
-
-app = Flask(__name__)
-
-
-
-########Checklist###########
-
-# clean the code
-# comment the code
-# make it user friendly
-# make it secure
-
-@app.route("/")
-def hello():
-    return "Hello, World!"
-
-@app.route("/sms", methods=['GET', 'POST'])
-def sms_reply():
-    msg = request.form.get('Body')
-    """Respond to incoming calls with a simple text message."""
-    # Start our TwiML response
-    resp = MessagingResponse()
-
-    # Add a message
-    # resp.message("The Robots are coming! Head for the hills!")
-
-
-    # print("hello",request.method['GET'])
-
-
-
-
-    def pass_gen():
-        global pass_wrd
-        pass_lst = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4',
-                    '5', '6', '7', '8',
-                    '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-                    'M', 'N', 'O', 'P',
-                    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd',
-                    'e', 'f', 'g', 'h',
-                    'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|',
-                    '}', '~']
-        att = ''
-        pass_wrd = att.join(rd.choices(pass_lst, k=8))
-        del[att]
-
-
-
-    # def pass_check(att_no):
-    #     global msg
-    #     if msg==pass_wrd:
-    #         resp.message("login success.")
-    #     if att_no==0:
-    #         resp.message("pls regen the key")
-    #     else:
-    #         resp.message("try again you have {} attempts left".format(pass_wrd))
-    #     att_no=att_no-1
-    #     pass_check(att_no)
-
-
-
-    def start():
-        global order_dict
-        order_dict = {}
-
-
-    def final_order():
-        global order_fin
-        order_fin = {}
-
-
-    a = msg.split()
-
-    if msg=="start":
-        # start()
-        final_order()
-        resp.message("started")
-    elif a[0]=="order":
-
-        start()
-        for i in range(1,len(a),2):
-            order_dict.update({a[i]:int(a[i+1])})
-        x=order_dict
-        resp.message("item    :    qunat.  ")
-
-        for i in order_dict:
-            resp.message("{}   :    {}".format(i,x[i]))
-
-        resp.message("to conform order type  conf_ord")
-
-    elif msg=="conf_ord":
-        for i in order_dict:
-            if i in order_fin:
-                order_fin.update({i: order_fin[i] + order_dict[i]})
-            else:
-                order_fin.update({i: order_dict[i]})
-        resp.message("order conformed")
-        order_dict={}
-    elif msg=="!order":
-        resp.message("  {} ".format(order_fin))
-
-
-
-
-
-
-
-
-
-
-
-    elif a[0] =="host":
-        try:
-            if a[1]==pass_wrd:
-                resp.message("success")
-            else:
-                resp.message("try again")
-        except:
-            resp.message("password not genrated")
-
-
-    # elif msg=="Send1":
-
-
-
-
-    elif msg=="date":
-        resp.message("{}".format(date.today()))
-
-
-    elif msg=="help":
-        resp.message("The commands are :\n"
-                     "'start' - for starting food orders\n"
-                     "'order\nitem_1 quant.\nitem_2 quant.'\n- for ordering food \n"
-                     "'!order' - for getting total orders\n"
-                     "'host *password*' - for becoming host\n"
-                     )
-
-
-
-    elif msg=="gen_pass":
-        pass_gen()
-        resp.message("password created")
-
-
-
-
-
-
-
-
-
-
-    elif msg=="pass":
-        try:
-            resp.message("{}".format(pass_wrd))
-        except:
-            resp.message("please gen the pass first")
-    else:
-        # resp.message("{}".format(msg))
-        x=msg.split()
-        for i in x:
-            resp.message("{}".format(i))
-
-
-    return str(resp)
-
-if __name__ == "__main__":
-    app.run(debug=True)
+import pandas as pd
+a=['vadapav','dabeli','shevpav','biryani','samosa']
+p=['TOTAL ORDER']
+l=1
+dicti={}
+k=[dicti]
+while(1):
+	r=0
+	x=input().lower()
+	e=x.split(' ')
+	if len(e)==1 :
+		e.append(1)
+		e.append('xyz')
+	if len(e)==2 and e[1]!='':
+		e.append('xyz')
+	else:
+		if len(e)==2:
+			e[1]='1'
+			e.append('xyz')
+	if len(e)==3 and e[2]=='':
+		e[2]='xyz'
+	b=e[0]
+	f='+add'
+	g='check'
+	c=e[1]
+	d=e[2]
+	if b=='help':
+		print('  (foodname amount storename) -- Method to order food')
+		print('  (+add foodname )            -- To add any food item ,')
+		print('  (check)                     -- To check order ,,')
+		print('  (total)                     -- To take total amount')
+		print('  (bill)                      -- To take total bill each store separately by entering food values ')
+		
+	elif b=='bill':
+		w=0
+		n=0
+		v=1
+		for j in k:
+			if j != dicti:
+				w=0
+				for x in a:
+					if x in j.keys():
+						print(x)
+						h=int(input())
+						w=w+h*int(j[x])
+				print(p[v],w)
+				v+=1
+			n+=w
+			if j != dicti:
+				print(n)
+	elif b not in a and b!=f and b!=g:
+		print('not added yet, you can add by entering (+add <NAME OF THE FOOD>)')
+		
+	elif b==f:
+		a.append(c)
+		a.sort()
+		print('now you can order :',c)
+		
+	elif b in a:
+		print('order placed')
+		if b not in dicti.keys():
+			dicti[b]=c
+			if d not in p:
+				p.append(d)
+				m=p[l]
+				m={}
+				m[b]=c
+				k.append(m)
+				l+=1
+			elif d in p:
+				s=0
+				for i in p:
+					if d==i:
+						t=k[s]
+						t[b]=c
+					s+=1
+					
+		elif b in dicti.keys():
+			dicti[b]=int(dicti[b])+int(c)
+			if d not in p:
+				p.append(d)
+				m=p[l]
+				m={}
+				m[b]=c
+				k.append(m)
+				l+=1
+			elif d in p:
+				s=0
+				for i in p:
+					if d==i:
+						t=k[s]
+						if b not in t.keys():
+							t[b]=c
+						else:
+							t[b]=int(t[b])+int(c)
+					s+=1
+					
+	elif b==g:
+		for o in p:
+			for q in range(r,r+1):
+				print(o)
+				u=k[r]
+				#for y in u.keys():
+					#z=[]
+					#z.append(u[y])
+					#u[y]=z
+				#table=pd.DataFrame(u)
+				print(u)
+				r+=1
